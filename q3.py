@@ -58,6 +58,14 @@ def question3(G):
     return returnDict
 
 
+a = {'A': [('B', 2), ('C', 6), ('B', 100)], 'B': [('A', 2), ('C', 5)], 'C': [('B', 5), ('A', 6)]}
+b = {'A': [('B', 2)], 'B': [('A', 2)]}
+c = {}
+
+print question3(a)
+print question3(b)
+print question3(c)
+
 
 # Test cases
 

@@ -13,9 +13,10 @@
 # Allows us to build a linked list, from
 # FSND Linked List Practice Quiz
 class Node(object):
-  def __init__(self, data):
-    self.data = data
-    self.next = None
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
 
 class LinkedList(object):
     def __init__(self, head=None):
@@ -29,6 +30,7 @@ class LinkedList(object):
             current.next = new_element
         else:
             self.head = new_element
+
 
 def question5(ll, m):
     if m <= 0:

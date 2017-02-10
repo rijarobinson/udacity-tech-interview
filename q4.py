@@ -28,13 +28,12 @@
 # This is the complete working code
 # Work in progress, It works, but always trying to improve
 
-# q4 working, as long as they didn't want me to make a BST first!
+# Assumptions:
+# Do not need to make a BST first
+
 def question4(T, r, n1, n2):
-    ptRel = []
-    n1Ancestors = []
-    n2Ancestors = []
-    n1Next = None
-    n2Next = None
+    ptRel, n1Ancestors, n2Ancestors = [], [], []
+    n1Next, n2Next = None, None
     for t in T:
         for m in range(len(t)):
             if t[m] == 1:
@@ -52,24 +51,25 @@ def question4(T, r, n1, n2):
             for p in ptRel:
                 if p['child'] == n2Next:
                     n2Ancestors.append(p['parent'])
-    x = 0
-    y = 0
+    x, y = 0, 0
     try:
-        while n1Ancestors[x]  != n2Ancestors[y]:
+        while n1Ancestors[x] != n2Ancestors[y]:
             y += 1
             try:
-                while n1Ancestors[x]  != n2Ancestors[y]:
+                while n1Ancestors[x] != n2Ancestors[y]:
                         x += 1
             except IndexError:
                 print "out of items"
             else:
                 return n1Ancestors[x]
-
     except IndexError:
         print "out of items"
     else:
         return n1Ancestors[x]
 
 
-print question4([[0, 1, 1, 0, 0, 0],[0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 1, 1],[1, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0]], 3, 4, 5)
-print question4([[0, 1, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[1, 0, 0, 0, 1],[0, 0, 0, 0, 0]], 3, 1, 4)
+print question4([[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
+                 [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0, 0]], 3, 4, 5)
+print question4([[0, 1, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
+                 [1, 0, 0, 0, 1], [0, 0, 0, 0, 0]], 3, 1, 4)

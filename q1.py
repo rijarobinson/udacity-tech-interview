@@ -1,15 +1,16 @@
 # Question 1
 
-# This is the complete working code
-# Work in progress, It works, but always trying to improve
-
 # Given two strings s and t, determine whether some anagram of t is a
 # substring of s.
 # For example: if s = "udacity" and t = "ad", then the function returns True.
 # Your function definition should look like: question1(s, t) and return a
 # boolean True or False."""
 
+# Notes for reviewer:
 # this solution is "faster" but seems to be more time complex. O(n+m)?
+# I used "/" to replace characters to to keep track of letters found.
+# This strikes me as being not a great practice, but I can't explain why
+# If you have thoughts about this I'd love to hear
 
 # Clarifying the Question/Assumptions:
 # We want to determine if t is contained within s in a different order (anagram)

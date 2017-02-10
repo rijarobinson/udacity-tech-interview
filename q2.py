@@ -1,29 +1,90 @@
-# You should write up a clean and efficient answer in Python, as well as a text
-# explanation of the efficiency of your code and your design choices.
-# A qualified reviewer will look over your answer and give you feedback
-# on anything that might be awesome or lacking-is your solution the most
-# efficient one possible? Are you doing a good job of explaining your thoughts?
-# Is your code elegant and easy to read?
-
-# Answer the following questions:
-
-
 
 # O(nm)?
 
-# """Question 2
-# Given a string a, find the longest palindromic substring contained in a. Your function
-# definition should look like question2(a), and return a string."""
+# Question 2
+# Given a string a, find the longest palindromic substring contained in a.
+# Your function definition should look like question2(a), and return a string.
 
-# This is the complete working code
-# Work in progress, It works, but always trying to improve
+# Notes for reviewer:
+# I used "/" to replace characters to to keep track of letters found.
+# This strikes me as being not a great practice, but I can't explain why
+# If you have thoughts about this I'd love to hear
 
-# Assumptions:
-# Palindrome is at least 2 characters long, since any single character could
-#   potentially be a word, and we are not checking against a dictionary
-# Numbers and spaces are ok, "/" is a reserved character
-# If there are multiple palindromes with the same length, the function
-#   will return the last one found
+# Clarifying the Question/Assumptions:
+# We want to determine if there are palindromes in the given string and
+# return the text of the longest one
+
+
+    # Assumptions:
+    # Palindrome is at least 2 characters long, since any single character could
+    #   potentially be a word, and we are not checking against a dictionary
+    # Numbers and spaces within the string are ok, "/" is a reserved character
+    # If there are multiple palindromes with the same length, the function
+    #   will return the last one found
+    # Case is disregarded
+    # Any palindrome is acceptable, it doesn't need to be a
+    #   legitimate English word
+
+# Confirming input/output:
+# We are taking in a string, a, containing only letters, numbers and spaces.
+# Output is a string containing the longest palindrome
+
+# Test Cases:
+# Some examples of test cases might be:
+    # a = 'tippit'
+    # Checks for a proper return if the entire string is a palindrome. Return
+    # should be 'tippit'
+
+    # a = 'tip pit'
+    # Checks for proper return if a contains a space. Return should be 'tip pit'
+
+    # a = 'xymmbc'
+    # Tests for a 2-letter palindrome. Return should be 'mm'
+
+    # a = 'zyjxjyzdmomomz'
+    # Tests for a string having more than one palindrome. Should return
+    # 'zyjxjyz'
+
+    # a = 'xmoxmjomz'
+    # Tests a string that has no palindromes > 1 character. Should return
+    # designated error message "No palindromes found"
+
+
+# Brainstorming
+
+# For this problem, I know the input values would be strings and that I
+# need to search a to find 1 or more palindromes and store those so I can
+# determine which is the longest.
+
+# I thought I could first reverse the string then find the first 2-letter
+# substring and check if it is in the original string. If it is, I can
+# keep adding to the string until it no longer matches, save the found
+# string, then look for the next palindrome. Keep logging found palidromes
+# until I run out of characters, then find the one with the longest length
+# and return it.
+
+# Edge cases: What if there are no palindromes within the string or
+# there are multiple palindromes with the same length? I handled the first
+# case by returning a message string and the 2nd case by simply returning
+# the first palindrome found with that length.
+# I decided not to check for wrong data type issues, but could
+# using try/except TypeError lines. I decided to assume a value was supplied.
+
+# I would consider checking to see if the entire string is a palindrome and
+# return it right away. If not, I can proceed with checking for the
+# palindromes within the string. However, I didn't include that check
+# with this version.
+
+# I decided that replacing string values in the searched string
+# would allow me to keep track of items that have been already found. I am not
+# sure if this was a good decision, and I appreciate feedback you might have.
+
+
+-------------------------M NEED TO DO THIS:------------------------------
+# In big O notation for time, there are about 6 lines in constant time.
+# Worst case would be ~O(3n log????? m) + 4). Where n is t and m is the
+# *found* list.--O(n+m)
+
 
 
 def question2(a):
@@ -82,6 +143,7 @@ def question2(a):
         return "No palindromes found :("
 
 print "test 1 should be tippit: %s" % question2('tippit')
-print "test 1 should be mm: %s" % question2('xymmbc')
+print "test 1.1 should be tip pit: %s" % question2('tip pit')
+print "test 1.2 should be mm: %s" % question2('xymmbc')
 print "test 2 should be zyjxjyz: %s" % question2('zyjxjyzdmomomz')
 print "test 3 should be No palindromes found: %s" % question2('xmoxmjomz')

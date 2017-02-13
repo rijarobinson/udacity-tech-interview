@@ -1,4 +1,4 @@
-
+STUDY BIG O SOME MORE
 # O(nm)?
 
 # Question 2

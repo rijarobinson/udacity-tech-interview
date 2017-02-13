@@ -1,3 +1,5 @@
+STUDY BIG O SOME MORE
+
 # Question 1
 
 # Given two strings s and t, determine whether some anagram of t is a

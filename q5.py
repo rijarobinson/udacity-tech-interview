@@ -1,3 +1,5 @@
+STUDY BIG O SOME MORE
+
 # This is the complete working code
 # Work in progress, It works, but always trying to improve
 

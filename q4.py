@@ -1,3 +1,5 @@
+STUDY BIG O SOME MORE
+
 # """Question 4
 # -Find the least common ancestor between two nodes on a binary search tree.
 # -The least common ancestor is the farthest node from the root that is an ancestor of both nodes.

@@ -1,8 +1,5 @@
 # STUDY BIG O SOME MORE
 
-# This is the complete working code
-# Work in progress, It works, but always trying to improve
-
 # """Question 3
 # -Given an undirected graph G, find the minimum spanning tree within G.
 # -A minimum spanning tree connects all vertices in a graph with the smallest
@@ -24,6 +21,8 @@
     # All edges are undirected
     # There are no parallel edges, and no vertices are self-connected
     # The returned list does not have to be sorted
+    # Edges are non-negative integers
+    # Vertices are letters
 
 # Confirming input/output:
 # We are taking in a graph, G, being represented by a dictionary. All edges
@@ -63,8 +62,11 @@
 # dictionary, so I wrote a function to first translate to a list. I think
 # that this will make it easier to sort by edge weight.
 
-# I want to start with checking the smallest edge values first. I review
-# Kruskal's algorithm which helps clarify this concept in my mind. In order
+# I review Kruskal's algorithm which helps clarify the concept in my mind.
+# I draw a graph representation of the inputs and followed Kruskal's
+# algorithm to come up with an answer.
+
+# I want to start with checking the smallest edge values first. In order
 # to do this, I figure I need to sort the vertex,vertex,edge lists by edge
 # value, then go through the list, select the lowest value edge, and
 # check to see if the vertices have already been visited.

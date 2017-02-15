@@ -59,7 +59,7 @@ def question2(a):
     palin_build, found_palins = "", []
     p = a[::-1]
     sps = 0
-    while (sps < len(p)) and (a != (len(a) * '/')):
+    while (a != (len(a) * '/')):
         if p[sps:sps+2] in a:
             palin_build = p[sps:sps+2]
             try:
@@ -176,13 +176,20 @@ print question3(G)
 
 # Question 4
 
-def question4(T, r, n1, n2):
-    pc_rel, n1_ancestors, n2_ancestors = [], [], []
-    n1_next, n2_next = None, None
+# Helper-build the relationships
+def buildRelationships(T):
+    pc_rel = []
     for t in T:
         for m in range(len(t)):
             if t[m] == 1:
                 pc_rel.append({'parent': T.index(t), 'child': m})
+    return pc_rel
+
+
+def question4(T, r, n1, n2):
+    n1_ancestors, n2_ancestors = [], []
+    n1_next, n2_next = None, None
+    pc_rel = buildRelationships(T)
     for p in pc_rel:
         if p['child'] == n1:
             n1_ancestors.append(p['parent'])

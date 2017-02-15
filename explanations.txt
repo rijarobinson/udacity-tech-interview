@@ -105,10 +105,9 @@ I would also consider using string/translate depending upon the
 business application.
 
 Time and Space Efficiency
-
 Worst case would be ~O(3n + m) + 4). Where n is t and m is the
 *found* list. ~O(n+m)
-
+We are creating a found array, worst case space will be ~O(n)
 
 Question 2
 
@@ -189,11 +188,9 @@ would allow me to keep track of items that have been already found. I am not
 sure if this was a good decision, and I appreciate feedback you might have.
 
 
--------------------------M NEED TO DO THIS:------------------------------
-In big O notation for time, there are about 6 lines in constant time.
-Worst case would be ~O(3n log????? m) + 4). Where n is t and m is the
-*found* list.--O(n+m)
-
+Time and space efficiency
+Worst case would be ~O((4n)(5n) + 4) where n is the length of a: ~O(n^2)
+We are creating space for a string (s) and an array (r) so worst case space is ~O(s + r)
 
 Question 3
 
@@ -275,8 +272,16 @@ check the next item in graph_2d.
 Finally, I need a way to convert the list back to a dictionary format, so I
 will create each result in the desired format and add it to my dictionary.
 
--------------------------M NEED TO DO THIS:------------------------------
-In big O notation for time, there are about 6 lines in constant time.
+Time and Space Efficiency
+We are going through the Length of g and each element within g (n) to create
+the 2d list. Then we are going through the 2d list (m). For each of these
+we need to compare to the items in results (which starts at 0 and grows)(r).
+
+To build the output, we need to traverse the result list one more time (r)
+Worst case time: ~O(n + mr + r)
+
+I am creating the results and 2d array, so worst case space will be ~O(n + m)
+
 
 Question 4
 
@@ -364,6 +369,17 @@ and return the first common ancestor that is found in the list (where the
 least ancestors appear at the beginning of the list, and moving up
 to the root)
 
+Time and space efficiency:
+To build the list of relationships, we have to go though all the items
+in t (n)
+Traverse list of relationships 3 times to build list of ancestors
+for n1 and n2 (p)
+Compare the lists and return matches (x)
+Worst Case Time: ~O(n + p^3 + x)
+
+I am creating 3 different arrays so worst case space will be ~O(n + m + x)
+
+
 Question 5
 
 Clarifying the Question/Assumptions:
@@ -404,5 +420,7 @@ the objects using next and adding them to the list.
 
 Time and Space Efficiency:
 Since we are adding the head element then iterating through the
-   remaining items with 2 actions, worst case of question5
-   is about O(2(n - 1)) or ~O(n-1)?
+   remaining items with 2 actions, worst case time of question5
+   is about O(2(n - 1)) or ~O(n)
+
+We are creating an array of n so Worst Case space will be ~O(n)

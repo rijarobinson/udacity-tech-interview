@@ -1,0 +1,408 @@
+Explanations
+
+Question 1
+
+Given two strings s and t, determine whether some anagram of t is a
+substring of s.
+For example: if s = "udacity" and t = "ad", then the function returns True.
+Your function definition should look like: question1(s, t) and return a
+boolean True or False."""
+
+Notes for reviewer:
+this solution is "faster" but seems to be more time complex. O(n+m)?
+I used "/" to replace characters to to keep track of letters found.
+This strikes me as being not a great practice, but I can't explain why
+If you have thoughts about this I'd love to hear
+I would consider using "translate" instead of replace
+depending upon the business application of the algorithm
+
+Clarifying the Question/Assumptions:
+We want to determine if t is contained within s in a different order (anagram)
+
+     Assumptions:
+     Letters and spaces only will be entered as a string
+     Spaces can be included
+     Case is disregarded
+     Any anagram is acceptable, it doesn't need to be a legitimate English word
+
+Confirming input/output:
+We are taking in 2 strings, s and t, containing only letters and spaces.
+Output is boolean True or False
+
+Test Cases:
+Some examples of test cases might be:
+     s = 'udacity'
+     t = 'AD'
+     Checks to see if the algorithm meets basic requirement of t being a
+     substring of s in any order and case is disregarded
+
+     s = 'robin'
+     t = 'robins'
+     Tests a case where t is longer than s, in which case, False could
+     immediately be returned (this check was not built into my example)
+     It could be included if case expects to be handled often
+
+     s = 'taco cat'
+     t = 'cat taco'
+     Included to check handling of spaces
+
+     s = ''
+     t = ''
+     Included to handle empty input, edge case
+
+     s = 'udacity'
+     t = 'city'
+     Included as an edge case where t is a substring but not necessarily
+     an anagram, should return False since it is not an anagram, but
+     simply a substring
+
+     s = 'udaCity'
+     t = 'tyci'
+     Included to check case handling and longer anagram
+
+     s = 'marija'
+     t = 'Raj'
+     Checks case handling and also checks that t's characters are contiguous
+     in s
+
+     s = 'marija'
+     t = 'mam'
+     A case where not all of the letters in t are in s (make sure a letter in
+         s can't get counted more than the actual number of times it appears)
+
+Brainstorming
+
+For this problem, I know the input values would be strings and that I
+needed to search s to see if the value of t was not only in s, but that
+it could be an anagram (defined here as a consecutive substring in a
+different order) of a subset of s. So I need to find a solution that will
+allow (and actually require) the items to be a different order than they
+appear in s.
+
+Edge cases: What if the user inputs a number? Maybe they forget to enter a
+value. I decided not to check for wrong data type issues, but could
+using try/except TypeError lines. I did decide I would like to make sure
+a value was supplied.
+
+I would consider checking to see if the anagram-substring length is larger
+than the main string, in which case should return False right away, since
+the anagram can't contain more characters than the original string. I won't
+include that in this solution; It might be overkill. In a real-world setting,
+I would need to balance adding that check (and the other checks above) within
+the context of the application and the likelihood those instances would occur.
+
+Since we are looking for an anagram, I need to make sure the function returned
+True for the items in any order. Therefore, I can't just search the main
+string for the substring as a whole. I need to check to see if each letter is
+contained within the main string in a contiguous fashion. One more thing I
+want to do was to create a constraint so that a letter appearing twice in
+t won't return True if the letter wasn't contained twice within s.
+
+I decided that replacing string values in the searched string
+would allow me to keep track of items that have been already found. I am not
+sure if this was a good decision, and I appreciate feedback you might have.
+I would also consider using string/translate depending upon the
+business application.
+
+Time and Space Efficiency
+
+Worst case would be ~O(3n + m) + 4). Where n is t and m is the
+*found* list. ~O(n+m)
+
+
+Question 2
+
+Given a string a, find the longest palindromic substring contained in a.
+Your function definition should look like question2(a), and return a string.
+
+Notes for reviewer:
+I used "/" to replace characters to to keep track of letters found.
+This strikes me as being not a great practice, but I can't explain why.
+If you have thoughts about this I'd love to hear.
+
+Clarifying the Question/Assumptions:
+We want to determine if there are palindromes in the given string and
+return the text of the longest one
+
+     Assumptions:
+     Palindrome is at least 2 characters long, since any single character could
+       potentially be a word, and we are not checking against a dictionary
+     Numbers and spaces within the string are ok, "/" is a reserved character
+     If there are multiple palindromes with the same length, the function
+       will return the last one found
+     Case is disregarded
+     Any palindrome is acceptable, it doesn't need to be a
+       legitimate English word
+
+Confirming input/output:
+We are taking in a string, a, containing only letters, numbers and spaces.
+Output is a string containing the longest palindrome
+
+Test Cases:
+Some examples of test cases might be:
+     a = 'tippit'
+     Checks for a proper return if the entire string is a palindrome. Return
+     should be 'tippit'. Edge case
+
+     a = 'tip pit'
+     Checks for proper return if a contains a space. Return should be 'tip pit'
+
+     a = 'xymmbc'
+     Tests for a 2-letter palindrome. Return should be 'mm'
+
+     a = 'zyjxjyzdmomomz'
+     Tests for a string having more than one palindrome. Should return
+     'zyjxjyz'
+
+     a = 'xmoxmjomz'
+     Tests a string that has no palindromes > 1 character. Should return
+     designated error message "No palindromes found". Edge case
+
+
+Brainstorming
+
+For this problem, I know the input values would be strings and that I
+need to search a to find 1 or more palindromes and store those so I can
+determine which is the longest.
+
+I thought I could first reverse the string then find the first 2-letter
+substring and check if it is in the original string. If it is, I can
+keep adding to the string until it no longer matches, save the found
+string, then look for the next palindrome. Keep logging found palidromes
+until I run out of characters, then find the one with the longest length
+and return it.
+
+Edge cases: What if there are no palindromes within the string or
+there are multiple palindromes with the same length? I handled the first
+case by returning a message string and the 2nd case by simply returning
+the first palindrome found with that length.
+I decided not to check for wrong data type issues, but could
+using try/except TypeError lines. I decided to assume a value was supplied.
+
+I would consider checking to see if the entire string is a palindrome and
+return it right away. If not, I can proceed with checking for the
+palindromes within the string. However, I didn't include that check
+with this version.
+
+I decided that replacing string values in the searched string
+would allow me to keep track of items that have been already found. I am not
+sure if this was a good decision, and I appreciate feedback you might have.
+
+
+-------------------------M NEED TO DO THIS:------------------------------
+In big O notation for time, there are about 6 lines in constant time.
+Worst case would be ~O(3n log????? m) + 4). Where n is t and m is the
+*found* list.--O(n+m)
+
+
+Question 3
+
+Clarifying the Question/Assumptions:
+We want to return a dictionary containing the list of vertices and edges
+that are a result of determining the miminum spanning tree for the
+given edge weights
+
+     Assumptions:
+     All edges are undirected
+     There are no parallel edges
+     The returned list does not have to be sorted
+     Edges are non-negative integers
+     Vertices are letters
+
+Confirming input/output:
+We are taking in a graph, G, being represented by a dictionary. All edges
+   in both directions are represented in the dictionary.
+Output is a dictionary, formatted as the input, which only contains
+   vertices and edges necessary to represent the minimum spanning tree
+
+Test Cases:
+Some examples of test cases might be:
+     Given Udacity case:
+     {'A': [('B', 2)], 'B': [('A', 2), ('C', 5)], 'C': [('B', 5)]}
+     The mst is {'A': [('B', 2)], 'B': [('A', 2), ('C', 5)], 'C': [('B', 5)]}
+       with a weight of 7
+
+     A slightly more complex example:
+       (https://en.wikipedia.org/wiki/Minimum_spanning_tree/media/File:Multiple_minimum_spanning_trees.svg)  NOQA
+     H = {'A': [('B', 1), ('D', 4), ('E', 3)],
+          'B': [('A', 1), ('D', 4), ('E', 2)],
+          'C': [('E', 4), ('F', 5)],
+          'D': [('A', 4), ('B', 4), ('E', 4)],
+          'E': [('A', 3), ('B', 2), ('C', 4), ('D', 4), ('F', 7)],
+          'F': [('C', 5), ('E', 7)]}
+     Allows for checking of more edges and possible combinations
+     The mst is {'A': [('B', 1), ('D', 4)], 'C': [('E', 4), ('F', 5)],
+                 'B': [('E', 2), ('A', 1)], 'E': [('B', 2), ('C', 4)],
+                 'D': [('A', 4)], 'F': [('C', 5)]} with a weight of 16
+
+     Case with a self-connected vertex
+     I = {'A': [('B', 2), ('A', 1)],'B': [('A', 2), ('C', 5)],'C': [('B', 5)]}
+     The mst is {'A': [('B', 2)], 'C': [('B', 5)], 'B': [('A', 2), ('C', 5)]}
+     with a weight of 7
+
+
+Brainstorming
+
+To get the minimum spanning tree, I need to go through each item in the
+given vertices/edges and select the smallest possible weights of edges
+that connect all vertices. Each edge is to be traversed only once. It helps
+me to keep in mind a real-world example where you might be laying network
+lines and the cost of going from point to point.
+
+I decided that it would be easier to work with a 2d list rather than
+dictionary, so I wrote a function to first translate to a list. I think
+that this will make it easier to sort by edge weight.
+
+I review Kruskal's algorithm which helps clarify the concept in my mind.
+I draw a graph representation of the inputs and followed Kruskal's
+algorithm to come up with an answer.
+
+I want to start with checking the smallest edge values first. In order
+to do this, I figure I need to sort the vertex,vertex,edge lists by edge
+value, then go through the list, select the lowest value edge, and
+check to see if the vertices have already been visited.
+
+I will keep track of vertices/edges I have visited by eliminating them from
+the graph_2d list until they have all been eliminated. Thus, I'll check
+to see if there are still items in graph_2d before checking for an item, which
+will determine my iterations.
+
+Once I find a vertex pair and edge that match my criteria for being the
+smallest edge available that has not had both vertices visted, I will add
+it to the list of results, delete it (and its inverse) from graph_2d, then
+check the next item in graph_2d.
+
+Finally, I need a way to convert the list back to a dictionary format, so I
+will create each result in the desired format and add it to my dictionary.
+
+-------------------------M NEED TO DO THIS:------------------------------
+In big O notation for time, there are about 6 lines in constant time.
+
+Question 4
+
+Clarifying the Question/Assumptions:
+We want to return an integer representing the node which n1 and n2
+have in common as an ancestor that is lowest on the tree, given the
+tree structure in a matrix
+
+     Assumptions:
+     Do not need to make a BST object first, will work from structure given
+     Both nodes provided are in the tree
+     Will return None if no common ancestor found
+
+Confirming input/output:
+We are taking in a (what we are assuming is a) BST being represented
+   by a matrix, the node to be designated as the root, and two nodes, n1 & n2
+   that are assumed to have a common ancestor
+Output is a number that represents to the ancestor that is common to both
+   n1 and n2 that is lowest on the tree
+
+Test Cases:
+   Udacity's case
+   print question4([[0, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0],
+                    [1, 0, 0, 0, 1],
+                    [0, 0, 0, 0, 0]],
+                     3,
+                     1,
+                     4)
+   Should return the root, 3
+
+   print question4([[0, 1, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 1],
+                    [1, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0]],
+                     3,
+                     4,
+                     5)
+   I included this case because it has two common ancestors, and I wanted to
+   make sure my algorithm returns the *least* common ancestor
+   This should return 2
+
+   print question4([[0, 1, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 1],
+                    [1, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0]],
+                     3,
+                     1,
+                     5)
+   Testing with the same tree, but one of the ancestors being up a level
+   Should return 0
+
+   print question4([[0, 0, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 1, 1],
+                    [1, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0]],
+                     3,
+                     1,
+                     5)
+   Edge case returns None since n1 is not in the tree
+   Should return None
+
+
+Brainstorming:
+First, I draw the BST using the matrix to visualize it and get an idea
+of what the test case must return. What I want to do is find the parents
+of each n1 and n2 and compare them. If they are the same parent, then
+I can simply return that node identifier. If they are not, I need to search
+further up the tree.
+
+I somehow need to track nodes that have been already search in case n1 and
+n2 are initially attached to different nodes, so that I compare new parent
+nodes found with parent nodes that have already been found.
+
+I decide that I will make a list of the parents of n1 and the parents of
+n2 in order of starting at the bottom of the tree, compare the lists,
+and return the first common ancestor that is found in the list (where the
+least ancestors appear at the beginning of the list, and moving up
+to the root)
+
+Question 5
+
+Clarifying the Question/Assumptions:
+We want to return the value of the mth item from the end in
+   the given linked list
+We need to build a linked list object first
+
+     Assumptions:
+     A negative number or 0 for m is not a valid input and should
+       output an error message
+     The linked list is singly linked
+     Node values can be whatever we want them to be
+
+Confirming input/output:
+We are taking in a linked list that has already been built and
+   a positive integer
+We will return the value of the mth item from the end in the list
+
+Test Cases:
+     print question5(ll, 2)
+     Takes in the linked list created using the ll object and
+     returns the 2nd item from the end.
+     Should return 4.
+
+     print question5(ll, 6)
+     Takes in the linked list, tries to return the 6th item from the end.
+     Should return error message, since the ll nodes added do not have
+     at least 6 nodes.
+
+     print question5(ll, -1)
+     Takes in the linked list, tries to return the -1th item from the end.
+     Should return error message, since we do not wish to use negatives or 0.
+
+Brainstorming:
+The list type allows us to easily select the mth item from the end,
+and a linked list can be easily converted to a python list by iterating
+the objects using next and adding them to the list.
+
+Time and Space Efficiency:
+Since we are adding the head element then iterating through the
+   remaining items with 2 actions, worst case of question5
+   is about O(2(n - 1)) or ~O(n-1)?

@@ -1,5 +1,3 @@
-STUDY BIG O SOME MORE
-
 # Question 1
 
 # Given two strings s and t, determine whether some anagram of t is a
@@ -13,6 +11,9 @@ STUDY BIG O SOME MORE
 # I used "/" to replace characters to to keep track of letters found.
 # This strikes me as being not a great practice, but I can't explain why
 # If you have thoughts about this I'd love to hear
+# I would consider using "translate" instead of replace
+# depending upon the business application of the algorithm
+
 
 # Clarifying the Question/Assumptions:
 # We want to determine if t is contained within s in a different order (anagram)
@@ -46,11 +47,11 @@ STUDY BIG O SOME MORE
 
     # s = ''
     # t = ''
-    # Included to handle empty input
+    # Included to handle empty input, edge case
 
     # s = 'udacity'
     # t = 'city'
-    # Included as an example where t is a substring but not necessarily
+    # Included as an edge case where t is a substring but not necessarily
     # an anagram, should return False since it is not an anagram, but
     # simply a substring
 
@@ -99,6 +100,8 @@ STUDY BIG O SOME MORE
 # I decided that replacing string values in the searched string
 # would allow me to keep track of items that have been already found. I am not
 # sure if this was a good decision, and I appreciate feedback you might have.
+# I would also consider using string/translate depending upon the
+# business application
 
 
 # In big O notation for time, there are about 4 lines in constant time.

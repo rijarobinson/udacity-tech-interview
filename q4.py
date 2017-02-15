@@ -27,16 +27,31 @@
 # """and the answer would be 3.""" (least common ancestor)
 
 
-# Assumptions:
-# Do not need to make a BST first
-# Will return None if no common ancestor found
-# Both nodes provided are in the tree
+# Clarifying the Question/Assumptions:
+# We want to return an integer representing the node which n1 and n2
+# have in common as an ancestor that is lowest on the tree, given the
+# tree structure in a matrix
+
+
+    # Assumptions:
+    # Do not need to make a BST object first, will work from structure given
+    # Both nodes provided are in the tree
+    # Will return None if no common ancestor found
+
+# Confirming input/output:
+# We are taking in a (what we are assuming is a) BST being represented
+#   by a matrix, the node to be designated as the root, and two nodes, n1 & n2
+#   that are assumed to have a common ancestor
+# Output is a number that represents to the ancestor that is common to both
+#   n1 and n2 that is lowest on the tree
 
 # Test Cases:
 #   Udacity's case
 #   print question4([[0, 1, 0, 0, 0],
-#                    [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
-#                    [1, 0, 0, 0, 1], [0, 0, 0, 0, 0]],
+#                    [0, 0, 0, 0, 0],
+#                    [0, 0, 0, 0, 0],
+#                    [1, 0, 0, 0, 1],
+#                    [0, 0, 0, 0, 0]],
 #                     3,
 #                     1,
 #                     4)
@@ -66,6 +81,36 @@
 #                     5)
 #   Testing with the same tree, but one of the ancestors being up a level
 #   Should return 0
+
+#   print question4([[0, 0, 1, 0, 0, 0],
+#                    [0, 0, 0, 0, 0, 0],
+#                    [0, 0, 0, 0, 1, 1],
+#                    [1, 0, 0, 0, 0, 0],
+#                    [0, 0, 0, 0, 0, 0],
+#                    [0, 0, 0, 0, 0, 0]],
+#                     3,
+#                     1,
+#                     5)
+#   Edge case returns None since n1 is not in the tree
+#   Should return None
+
+
+# Brainstorming:
+# First, I draw the BST using the matrix to visualize it and get an idea
+# of what the test case must return. What I want to do is find the parents
+# of each n1 and n2 and compare them. If they are the same parent, then
+# I can simply return that node identifier. If they are not, I need to search
+# further up the tree.
+
+# I somehow need to track nodes that have been already search in case n1 and
+# n2 are initially attached to different nodes, so that I compare new parent
+# nodes found with parent nodes that have already been found.
+
+# I decide that I will make a list of the parents of n1 and the parents of
+# n2 in order of starting at the bottom of the tree, compare the lists,
+# and return the first common ancestor that is found in the list (where the
+# least ancestors appear at the beginning of the list, and moving up
+# to the root)
 
 def question4(T, r, n1, n2):
     # Create a list of dictionaries to hold all relationships
@@ -102,11 +147,23 @@ def question4(T, r, n1, n2):
     if any_in:
         return any_in[0]
 
+
+# Test cases
+# Should return 3
 print question4([[0, 1, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
                  [1, 0, 0, 0, 1], [0, 0, 0, 0, 0]], 3, 1, 4)
+
+# Should return 2
 print question4([[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
                  [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0]], 3, 4, 5)
+
+# Should return 0
 print question4([[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
+                 [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0, 0]], 3, 1, 5)
+
+# Should return None
+print question4([[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
                  [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0]], 3, 1, 5)

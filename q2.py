@@ -1,4 +1,3 @@
-STUDY BIG O SOME MORE
 # O(nm)?
 
 # Question 2
@@ -33,7 +32,7 @@ STUDY BIG O SOME MORE
 # Some examples of test cases might be:
     # a = 'tippit'
     # Checks for a proper return if the entire string is a palindrome. Return
-    # should be 'tippit'
+    # should be 'tippit'. Edge case
 
     # a = 'tip pit'
     # Checks for proper return if a contains a space. Return should be 'tip pit'
@@ -47,7 +46,7 @@ STUDY BIG O SOME MORE
 
     # a = 'xmoxmjomz'
     # Tests a string that has no palindromes > 1 character. Should return
-    # designated error message "No palindromes found"
+    # designated error message "No palindromes found". Edge case
 
 
 # Brainstorming
@@ -80,7 +79,7 @@ STUDY BIG O SOME MORE
 # sure if this was a good decision, and I appreciate feedback you might have.
 
 
--------------------------M NEED TO DO THIS:------------------------------
+#-------------------------M NEED TO DO THIS:------------------------------
 # In big O notation for time, there are about 6 lines in constant time.
 # Worst case would be ~O(3n log????? m) + 4). Where n is t and m is the
 # *found* list.--O(n+m)
@@ -90,8 +89,7 @@ STUDY BIG O SOME MORE
 def question2(a):
     if "/" in a:
         return "'/' character not allowed"
-    palinBuild = ""
-    foundPalins = []
+    palin_build, found_palins = "", []
     # Reverse a to see if there are any matching substrings
     p = a[::-1]
     sps = 0
@@ -103,30 +101,30 @@ def question2(a):
         if p[sps:sps+2] in a:
             # Add the characters to start of palindrome. Will need to
             # further check to see if additional charcters may be added
-            palinBuild = p[sps:sps+2]
+            palin_build = p[sps:sps+2]
             try:
                 # Continue to try to build the matching string by checking
                 # the found string plus the next character against a
-                while (palinBuild + p[sps+2]) in a:
+                while (palin_build + p[sps+2]) in a:
                     # If it's in a, go ahead and add it to the palindrome found
                     # and increment to check the next character
-                    palinBuild += p[sps+2]
+                    palin_build += p[sps+2]
                     sps += 1
                 # Finally, if the found palindrome is a verified palindrome and
                 # a similar one was not already found, add it to the list of
                 # found palindromes
-                if (palinBuild == palinBuild[::-1] and
-                        palinBuild not in foundPalins):
-                    foundPalins.append(palinBuild)
+                if (palin_build == palin_build[::-1] and
+                        palin_build not in found_palins):
+                    found_palins.append(palin_build)
                 # Replace checked characters in a with '/'
-                a = a.replace(palinBuild, '/', 1)
+                a = a.replace(palin_build, '/', 1)
             except IndexError:
                 # If there is an index error, check it against a and add
                 # it to palindromes found if matches and is not already there
-                if (palinBuild == palinBuild[::-1] and len(palinBuild) > 1 and
-                        palinBuild not in foundPalins):
-                    foundPalins.append(palinBuild)
-                a = a.replace(palinBuild, '/', 1)
+                if (palin_build == palin_build[::-1] and len(palin_build) > 1 and
+                        palin_build not in found_palins):
+                    found_palins.append(palin_build)
+                a = a.replace(palin_build, '/', 1)
                 sps += 1
         else:
             # If the first three characters were not in a, replace the
@@ -138,7 +136,7 @@ def question2(a):
     try:
         # Now check the list of found palindromes to see
         # which is the longest string
-        return (max(foundPalins, key=len))
+        return (max(found_palins, key=len))
     except ValueError:
         return "No palindromes found :("
 

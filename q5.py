@@ -40,9 +40,10 @@
 # submit my project ;)
 
 # Time and Space Efficiency:
-# Since we are adding the head element then iterating through the
-#   remaining items with 2 actions, worst case of question5
-#   is about O(2(n - 1)) or O(n-1)?
+# Since we are iterating through the linked list with 1 action (moving to the next item),
+#     worst case time of question5 is about O(n).
+
+# We are not creating any structures so Worst Case space will be ~O(1)
 
 # Allows us to build a linked list, from
 # FSND Linked List Practice Quiz
@@ -55,42 +56,31 @@ class Node(object):
 class LinkedList(object):
     def __init__(self, head=None):
         self.head = head
+        self.length = 1
 
     def append(self, new_element):
         current = self.head
         if self.head:
             while current.next:
                 current = current.next
+                self.length += 1
             current.next = new_element
         else:
             self.head = new_element
 
 
 def question5(ll, m):
-    # We are handling cases where a negative number or 0
-    # has been supplied
     if m <= 0:
         return "Please supply number 1 or higher"
-    try:
-        # If the linked list has been provided, create a list to hold the
-        # values for easy selection of mth element. Append the head
-        # to the list then move to the next item
-        item = ll.head
-        linked_list = []
-        linked_list.append(item.data)
-        item = item.next
-        # While there are items in the linked list, continue to build the list
-        # in the order of the linked list with the rest of the items.
-        while item:
-            linked_list.append(item.data)
+    item = ll.head
+    length = ll.length
+    get_item = length - m
+    if m <= length:
+        for i in range(get_item):
             item = item.next
-        # Now try to return the mth item from the end of the list. If there
-        # is nothing there, return the error message
-        return linked_list[-m]
-    except IndexError:
+    else:
         return "Provided position is not in the list"
-
-# The head of a list is it's first node.
+    return item.data
 
 e1 = Node(1)
 e2 = Node(2)
@@ -103,5 +93,6 @@ ll.append(e4)
 ll.append(e3)
 
 print question5(ll, 2)
+print question5(ll, 3)
 print question5(ll, 6)
 print question5(ll, -1)

@@ -106,7 +106,7 @@
 
 # In big O notation for time, there are about 4 lines in constant time.
 # Worst case would be ~O(3n + m) + 4). Where n is t and m is the
-# *found* list.--O(n+m)
+# *found* list.--O(n^2+m)
 
 
 def question1(s, t):

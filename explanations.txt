@@ -105,8 +105,7 @@ I would also consider using string/translate depending upon the
 business application.
 
 Time and Space Efficiency
-Worst case would be ~O(3n + m) + 4). Where n is t and m is the
-*found* list. ~O(n+m)
+Worst case would be ~O(3n + m) + 4). Where n is t and m is the *found* list. ~O(n^2+m)
 We are creating a found array, worst case space will be ~O(n)
 
 Question 2
@@ -291,8 +290,7 @@ have in common as an ancestor that is lowest on the tree, given the
 tree structure in a matrix
 
      Assumptions:
-     Do not need to make a BST object first, will work from structure given
-     Both nodes provided are in the tree
+     A node is its own ancestor
      Will return None if no common ancestor found
 
 Confirming input/output:
@@ -302,7 +300,7 @@ We are taking in a (what we are assuming is a) BST being represented
 Output is a number that represents to the ancestor that is common to both
    n1 and n2 that is lowest on the tree
 
-Test Cases:
+ Test Cases:
    Udacity's case
    print question4([[0, 1, 0, 0, 0],
                     [0, 0, 0, 0, 0],
@@ -314,70 +312,64 @@ Test Cases:
                      4)
    Should return the root, 3
 
-   print question4([[0, 1, 1, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 1, 1],
-                    [1, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0]],
-                     3,
-                     4,
-                     5)
-   I included this case because it has two common ancestors, and I wanted to
-   make sure my algorithm returns the *least* common ancestor
-   This should return 2
+ print question4([[0, 0, 0, 0, 0, 0],
+                  [1, 0, 0, 1, 0, 0],
+                  [0, 0, 0, 0, 0, 0],
+                  [0, 0, 1, 0, 0, 1],
+                  [0, 0, 0, 0, 1, 0],
+                  [0, 0, 0, 0, 0, 0]],
+                   1,
+                   4,
+                   5)
+   Should return 5
 
-   print question4([[0, 1, 1, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 1, 1],
-                    [1, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0]],
-                     3,
-                     1,
-                     5)
-   Testing with the same tree, but one of the ancestors being up a level
-   Should return 0
+ print question4([[0, 1, 1, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0],
+                  [1, 0, 0, 0, 0, 0, 1, 0],
+                  [0, 0, 0, 0, 0, 1, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 1, 0, 0, 1],
+                  [0, 0, 0, 0, 0, 0, 0, 0]],
+                   3,
+                   5,
+                   7)
+   Should return 6
 
-   print question4([[0, 0, 1, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 1, 1],
-                    [1, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0]],
-                     3,
-                     1,
-                     5)
-   Edge case returns None since n1 is not in the tree
-   Should return None
+ print question4([[0, 0, 0, 0, 0, 0],
+                  [1, 0, 0, 1, 0, 0],
+                  [0, 0, 0, 0, 0, 0],
+                  [0, 0, 1, 0, 0, 1],
+                  [0, 0, 0, 0, 1, 0],
+                  [0, 0, 0, 0, 0, 0]],
+                   1,
+                   7,
+                   5)
+   Should return Node not in matrix
 
 
 Brainstorming:
 First, I draw the BST using the matrix to visualize it and get an idea
-of what the test case must return. What I want to do is find the parents
-of each n1 and n2 and compare them. If they are the same parent, then
-I can simply return that node identifier. If they are not, I need to search
-further up the tree.
+of what the test case must return. What I want to do is take advantage
+the BST rules so I will create a BST tree. Once I have the tree,
+I can add the nodes given, and recursively search for the lowest
+common ancestor based on the value of the nodes in relation to r,
+which will change if no common ancestor is available for that
+recursion.
 
-I somehow need to track nodes that have been already search in case n1 and
-n2 are initially attached to different nodes, so that I compare new parent
-nodes found with parent nodes that have already been found.
+I will put in place a check first to see if the nodes qualify
+for the root to be the lca, that is, if n1 and n2 are on different
+sides of the root.
 
-I decide that I will make a list of the parents of n1 and the parents of
-n2 in order of starting at the bottom of the tree, compare the lists,
-and return the first common ancestor that is found in the list (where the
-least ancestors appear at the beginning of the list, and moving up
-to the root)
+I also want to check to make sure the given nodes are in the tree.
+
 
 Time and space efficiency:
-To build the list of relationships, we have to go though all the items
-in t (n)
-Traverse list of relationships 3 times to build list of ancestors
-for n1 and n2 (p)
-Compare the lists and return matches (x)
-Worst Case Time: ~O(n + p^3 + x)
+To build the tree, I must go through all the nodes, which is nm
+Worst Case Time: ~O(nm)
 
-I am creating 3 different arrays so worst case space will be ~O(n + m + x)
+I'm not sure if I am adding to the call stack as I recursively
+call, I think space is ~O(1)
 
 
 Question 5
@@ -399,10 +391,16 @@ We are taking in a linked list that has already been built and
 We will return the value of the mth item from the end in the list
 
 Test Cases:
+
      print question5(ll, 2)
      Takes in the linked list created using the ll object and
      returns the 2nd item from the end.
      Should return 4.
+
+     print question5(ll, 3)
+     Takes in the linked list created using the ll object and
+     returns the 3rd item from the end.
+     Should return 2
 
      print question5(ll, 6)
      Takes in the linked list, tries to return the 6th item from the end.
@@ -414,13 +412,13 @@ Test Cases:
      Should return error message, since we do not wish to use negatives or 0.
 
 Brainstorming:
-The list type allows us to easily select the mth item from the end,
-and a linked list can be easily converted to a python list by iterating
-the objects using next and adding them to the list.
+After considering a list, a hint helped me discover that I should just
+get the length of the linked list, subtract m from the length,
+then move through the items in the list to get the value at the resulting
+position
 
 Time and Space Efficiency:
-Since we are adding the head element then iterating through the
-   remaining items with 2 actions, worst case time of question5
-   is about O(2(n - 1)) or ~O(n)
+Since we are iterating through the linked list with 1 action (moving to the next item),
+    worst case time of question5 is about O(n).
 
-We are creating an array of n so Worst Case space will be ~O(n)
+We are not creating any structures so Worst Case space will be ~O(1)

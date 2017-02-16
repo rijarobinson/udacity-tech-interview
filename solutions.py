@@ -176,58 +176,82 @@ print question3(G)
 
 # Question 4
 
-# Helper-build the relationships
-def buildRelationships(T):
-    pc_rel = []
+# Create a node class
+class Node(object):
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+class BST(object):
+    def __init__(self, root):
+        self.root = Node(root)
+
+    def insert(self, new_val):
+        self.helper_insert(self.root, new_val)
+
+    def helper_insert(self, current, new_val):
+        if current.value < new_val:
+            if current.right:
+                self.helper_insert(current.right, new_val)
+            else:
+                current.right = Node(new_val)
+        else:
+            if current.left:
+                self.helper_insert(current.left, new_val)
+            else:
+                current.left = Node(new_val)
+
+
+def createTree(tree, T):
     for t in T:
-        for m in range(len(t)):
-            if t[m] == 1:
-                pc_rel.append({'parent': T.index(t), 'child': m})
-    return pc_rel
+        for i in range(len(t)):
+            if t[i] == 1:
+                tree.insert(i)
+    return tree
+
+
+def checkPosition(n1, n2, r):
+    if (n1 <= r.value and n2 >= r.value or
+        n1 >= r.value and n2 <= r.value):
+        return r.value
+    elif n1 < r.value and n2 < r.value:
+        r = r.left
+        if r:
+            return checkPosition(n1, n2, r)
+    elif n1 > r.value and n2 > r.value:
+        r = r.right
+        if r:
+            return checkPosition(n1, n2, r)
 
 
 def question4(T, r, n1, n2):
-    n1_ancestors, n2_ancestors = [], []
-    n1_next, n2_next = None, None
-    pc_rel = buildRelationships(T)
-    for p in pc_rel:
-        if p['child'] == n1:
-            n1_ancestors.append(p['parent'])
-            n1_next = p['parent']
-            for p in pc_rel:
-                if p['child'] == n1_next:
-                    n1_ancestors.append(p['parent'])
-        if p['child'] == n2:
-            n2_ancestors.append(p['parent'])
-            n2_next = p['parent']
-            for p in pc_rel:
-                if p['child'] == n2_next:
-                    n2_ancestors.append(p['parent'])
-    any_in = [x for x in n1_ancestors if x in n2_ancestors]
-    if any_in:
-        return any_in[0]
-
+    if n1 <= len(T) and n2 <= len(T):
+        tree = BST(r)
+        createTree(tree, T)
+        return checkPosition(n1, n2, tree.root)
+    else:
+        return "Node not in matrix"
 
 # Test cases
-
 print question4([[0, 1, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
                  [1, 0, 0, 0, 1], [0, 0, 0, 0, 0]], 3, 1, 4)
 # Expected: 3
 
-print question4([[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
-                 [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0]], 3, 4, 5)
-# Expected: 2
+print question4([[0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0],
+                 [0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0],
+                 [0, 0, 0, 0, 0, 0]], 1, 4, 5)
+# Expected: 5
 
-print question4([[0, 1, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
-                 [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0]], 3, 1, 5)
-# Expected: 0
+print question4([[0, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],
+                 [1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0]], 3, 5, 7)
+# Expected: 6
 
-print question4([[0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 1],
-                 [1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
-                 [0, 0, 0, 0, 0, 0]], 3, 1, 5)
-# Expected: None
+print question4([[0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0],
+                 [0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0],
+                 [0, 0, 0, 0, 0, 0]], 1, 7, 5)
+# Expected: Node not in matrix
 
 
 # Question 5
@@ -243,12 +267,14 @@ class Node(object):
 class LinkedList(object):
     def __init__(self, head=None):
         self.head = head
+        self.length = 1
 
     def append(self, new_element):
         current = self.head
         if self.head:
             while current.next:
                 current = current.next
+                self.length += 1
             current.next = new_element
         else:
             self.head = new_element
@@ -257,32 +283,31 @@ class LinkedList(object):
 def question5(ll, m):
     if m <= 0:
         return "Please supply number 1 or higher"
-    try:
-        item = ll.head
-        linked_list = []
-        linked_list.append(item.data)
-        item = item.next
-        while item:
-            linked_list.append(item.data)
+    item = ll.head
+    length = ll.length
+    get_item = length - m
+    if m <= length:
+        for i in range(get_item):
             item = item.next
-        return linked_list[-m]
-    except IndexError:
+    else:
         return "Provided position is not in the list"
+    return item.data
 
-# The head of a list is it's first node.
+e1 = Node(1)
+e2 = Node(2)
+e3 = Node(3)
+e4 = Node(4)
 
-n1 = Node(1)
-n2 = Node(2)
-n3 = Node(3)
-n4 = Node(4)
-
-ll = LinkedList(n1)
-ll.append(n2)
-ll.append(n4)
-ll.append(n3)
+ll = LinkedList(e1)
+ll.append(e2)
+ll.append(e4)
+ll.append(e3)
 
 print question5(ll, 2)
 # Expected: 4
+
+print question5(ll, 3)
+# Expected: 2
 
 print question5(ll, 6)
 # Expected: Provided position is not in the list

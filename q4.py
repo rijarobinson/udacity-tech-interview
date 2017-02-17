@@ -54,7 +54,7 @@
 #                     3,
 #                     1,
 #                     4)
-#   Should return the root, 3
+#   Expected: the root, 3
 
 # print question4([[0, 0, 0, 0, 0, 0],
 #                  [1, 0, 0, 1, 0, 0],
@@ -65,7 +65,7 @@
 #                   1,
 #                   4,
 #                   5)
-#   Should return 5
+#   Expected: 5
 
 # print question4([[0, 1, 1, 0, 0, 0, 0, 0],
 #                  [0, 0, 0, 0, 0, 0, 0, 0],
@@ -78,7 +78,7 @@
 #                   3,
 #                   5,
 #                   7)
-#   Should return 6
+#   Expected: 6
 
 # print question4([[0, 0, 0, 0, 0, 0],
 #                  [1, 0, 0, 1, 0, 0],
@@ -89,7 +89,7 @@
 #                   1,
 #                   7,
 #                   5)
-#   Should return Node not in matrix
+#   Expected: Node not in matrix
 
 
 # Brainstorming:
@@ -108,150 +108,54 @@
 # I also want to check to make sure the given nodes are in the tree.
 
 
-# First solution, see more efficient solution below
-# # Helper-build the relationships
-# def buildRelationships(T):
-#     # Create a list of dictionaries to hold all relationships
-#     pc_rel = []
-#     # Go through each item in the maxtrix and determine parent-child
-#     # relationships and append each pair to pC_Rel list
-#     for t in T:
-#         # Go through the inner list and check if the node contains a child node
-#         # if so, append to the parent/child list
-#         for m in range(len(t)):
-#             if t[m] == 1:
-#                 pc_rel.append({'parent': T.index(t), 'child': m})
-#     return pc_rel
+
+def getRightNode(tree, r):
+    branch = tree[r]
+    higher_node = (len(branch) - 1) - branch[::-1].index(1)
+    return higher_node
 
 
-# def question4(T, r, n1, n2):
-#     # list for each of the n1 and n2 ancestors for comparison
-#     n1_ancestors, n2_ancestors = [], []
-#     n1_next, n2_next = None, None
-#     pc_rel = buildRelationships(T)
-#     # Look at the parent/child list and create a list of parents
-#     # for each child that was given as n1 or n2
-#     for p in pc_rel:
-#         if p['child'] == n1:
-#             n1_ancestors.append(p['parent'])
-#             n1_next = p['parent']
-#             for p in pc_rel:
-#                 if p['child'] == n1_next:
-#                     n1_ancestors.append(p['parent'])
-#         if p['child'] == n2:
-#             n2_ancestors.append(p['parent'])
-#             n2_next = p['parent']
-#             for p in pc_rel:
-#                 if p['child'] == n2_next:
-#                     n2_ancestors.append(p['parent'])
-#     # Now we will compare the lists and find the common ancestors, then
-#     # return the lowest in the tree (that closest to the beginning of the list)
-#     any_in = [x for x in n1_ancestors if x in n2_ancestors]
-#     if any_in:
-#         return any_in[0]
-
-# Create a node class
-class Node(object):
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
-
-class BST(object):
-    def __init__(self, root):
-        self.root = Node(root)
-
-    def insert(self, new_val):
-        self.helper_insert(self.root, new_val)
-
-    def helper_insert(self, current, new_val):
-        if current.value < new_val:
-            if current.right:
-                self.helper_insert(current.right, new_val)
-            else:
-                current.right = Node(new_val)
-        else:
-            if current.left:
-                self.helper_insert(current.left, new_val)
-            else:
-                current.left = Node(new_val)
-
-
-    # def print_tree(self):
-    #     """Print out all tree nodes
-    #     as they are visited in
-    #     a pre-order traversal."""
-    #     traversal = []
-    #     start = self.root
-    #     if start != None:
-    #         return "-".join(self.preorder_print(start, traversal))
-    #     else:
-    #         return "no root"
-
-
-    # def preorder_print(self, start, traversal):
-    #     """Helper method - use this to create a
-    #     recursive print solution."""
-    #     if start:
-    #         traversal.append(str(start.value))
-    #         self.preorder_print(start.left, traversal)
-    #         self.preorder_print(start.right, traversal)
-    #     return traversal
-
-
-
-def createTree(tree, T):
-    for t in T:
-        for i in range(len(t)):
-            if t[i] == 1:
-                tree.insert(i)
-    return tree
-
-
-def checkPosition(n1, n2, r):
-    # print "n1, n2, r: %s" % str(n1) + ", " + str(n2) + ", " + str(r.value)
-    if (n1 <= r.value and n2 >= r.value or
-        n1 >= r.value and n2 <= r.value):
-        return r.value
-    elif n1 < r.value and n2 < r.value:
-        # print "n1 and n2 are to the left"
-        r = r.left
-        if r:
-            # print "r is now: %s" % r.value
-            return checkPosition(n1, n2, r)
-    elif n1 > r.value and n2 > r.value:
-        # print "n1 and n2 are to the right"
-        r = r.right
-        if r:
-            # print "r is now: %s" % r.value
-            return checkPosition(n1, n2, r)
+def getLeftNode(tree, r):
+    branch = tree[r]
+    lower_node = branch.index(1)
+    return lower_node
 
 
 def question4(T, r, n1, n2):
     if n1 <= len(T) and n2 <= len(T):
-        tree = BST(r)
-        createTree(tree, T)
-        # print tree.print_tree()
-        return checkPosition(n1, n2, tree.root)
+        while not (n1 <= r and n2 >= r or
+                n1 >= r and n2 <= r):
+            if n1 < r and n2 < r:
+                r = getLeftNode(T, r)
+            elif n1 > r and n2 > r:
+                r = getRightNode(T, r)
+        if r:
+            return r
     else:
         return "Node not in matrix"
 
+
 # Test cases
-# Should return 3
 print question4([[0, 1, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
                  [1, 0, 0, 0, 1], [0, 0, 0, 0, 0]], 3, 1, 4)
+# Expected: 3
 
-# Should return 5
 print question4([[0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0],
                  [0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0],
                  [0, 0, 0, 0, 0, 0]], 1, 4, 5)
+# Expected: 5
 
-# # Should return 6
 print question4([[0, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],
                  [1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0]], 3, 5, 7)
+# Expected: 6
 
-# # Should return Node not in matrix
+print question4([[0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, 1, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0]], 3, 1, 2)
+# Expected: 1, checks the left side
+
 print question4([[0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0],
                  [0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0],
                  [0, 0, 0, 0, 0, 0]], 1, 7, 5)
+# Expected: Node not in matrix

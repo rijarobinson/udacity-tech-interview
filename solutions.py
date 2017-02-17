@@ -176,62 +176,31 @@ print question3(G)
 
 # Question 4
 
-# Create a node class
-class Node(object):
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
-
-class BST(object):
-    def __init__(self, root):
-        self.root = Node(root)
-
-    def insert(self, new_val):
-        self.helper_insert(self.root, new_val)
-
-    def helper_insert(self, current, new_val):
-        if current.value < new_val:
-            if current.right:
-                self.helper_insert(current.right, new_val)
-            else:
-                current.right = Node(new_val)
-        else:
-            if current.left:
-                self.helper_insert(current.left, new_val)
-            else:
-                current.left = Node(new_val)
+def getRightNode(tree, r):
+    branch = tree[r]
+    higher_node = (len(branch) - 1) - branch[::-1].index(1)
+    return higher_node
 
 
-def createTree(tree, T):
-    for t in T:
-        for i in range(len(t)):
-            if t[i] == 1:
-                tree.insert(i)
-    return tree
-
-
-def checkPosition(n1, n2, r):
-    if (n1 <= r.value and n2 >= r.value or
-        n1 >= r.value and n2 <= r.value):
-        return r.value
-    elif n1 < r.value and n2 < r.value:
-        r = r.left
-        if r:
-            return checkPosition(n1, n2, r)
-    elif n1 > r.value and n2 > r.value:
-        r = r.right
-        if r:
-            return checkPosition(n1, n2, r)
+def getLeftNode(tree, r):
+    branch = tree[r]
+    lower_node = branch.index(1)
+    return lower_node
 
 
 def question4(T, r, n1, n2):
     if n1 <= len(T) and n2 <= len(T):
-        tree = BST(r)
-        createTree(tree, T)
-        return checkPosition(n1, n2, tree.root)
+        while not (n1 <= r and n2 >= r or
+                n1 >= r and n2 <= r):
+            if n1 < r and n2 < r:
+                r = getLeftNode(T, r)
+            elif n1 > r and n2 > r:
+                r = getRightNode(T, r)
+        if r:
+            return r
     else:
         return "Node not in matrix"
+
 
 # Test cases
 print question4([[0, 1, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0],
@@ -247,6 +216,11 @@ print question4([[0, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0
                  [1, 0, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0]], 3, 5, 7)
 # Expected: 6
+
+print question4([[0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, 1, 0, 0, 0, 0, 1, 0], [0, 0, 0, 0, 0, 1, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0]], 3, 1, 2)
+# Expected: 1, checks the left side
 
 print question4([[0, 0, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0],
                  [0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0],
@@ -267,14 +241,12 @@ class Node(object):
 class LinkedList(object):
     def __init__(self, head=None):
         self.head = head
-        self.length = 1
 
     def append(self, new_element):
         current = self.head
         if self.head:
             while current.next:
                 current = current.next
-                self.length += 1
             current.next = new_element
         else:
             self.head = new_element
@@ -284,14 +256,20 @@ def question5(ll, m):
     if m <= 0:
         return "Please supply number 1 or higher"
     item = ll.head
-    length = ll.length
+    ll_length = 1
+    while item.next:
+        ll_length += 1
+        item = item.next
+    length = ll_length
     get_item = length - m
+    item = ll.head
     if m <= length:
         for i in range(get_item):
             item = item.next
     else:
         return "Provided position is not in the list"
     return item.data
+
 
 e1 = Node(1)
 e2 = Node(2)

@@ -56,14 +56,12 @@ class Node(object):
 class LinkedList(object):
     def __init__(self, head=None):
         self.head = head
-        self.length = 1
 
     def append(self, new_element):
         current = self.head
         if self.head:
             while current.next:
                 current = current.next
-                self.length += 1
             current.next = new_element
         else:
             self.head = new_element
@@ -73,8 +71,13 @@ def question5(ll, m):
     if m <= 0:
         return "Please supply number 1 or higher"
     item = ll.head
-    length = ll.length
+    ll_length = 1
+    while item.next:
+        ll_length += 1
+        item = item.next
+    length = ll_length
     get_item = length - m
+    item = ll.head
     if m <= length:
         for i in range(get_item):
             item = item.next
@@ -93,6 +96,13 @@ ll.append(e4)
 ll.append(e3)
 
 print question5(ll, 2)
+# Expected: 4
+
 print question5(ll, 3)
+# Expected: 2
+
 print question5(ll, 6)
+# Expected: Provided position is not in the list
+
 print question5(ll, -1)
+# Expected: Please supply number 1 or higher

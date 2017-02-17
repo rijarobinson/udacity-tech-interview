@@ -336,6 +336,19 @@ Output is a number that represents to the ancestor that is common to both
                    7)
    Should return 6
 
+print question4([[0, 0, 0, 0, 0, 0, 0, 0],
+                 [1, 0, 1, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, 1, 0, 0, 0, 0, 1, 0],
+                 [0, 0, 0, 0, 0, 1, 0, 0],
+                 [0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 1, 0, 0, 1],
+                 [0, 0, 0, 0, 0, 0, 0, 0]],
+                  3,
+                  1,
+                  2)
+   Expected: 1, checks the left side
+
  print question4([[0, 0, 0, 0, 0, 0],
                   [1, 0, 0, 1, 0, 0],
                   [0, 0, 0, 0, 0, 0],
@@ -352,7 +365,7 @@ Brainstorming:
 First, I draw the BST using the matrix to visualize it and get an idea
 of what the test case must return. What I want to do is take advantage
 the BST rules so I will create a BST tree. Once I have the tree,
-I can add the nodes given, and recursively search for the lowest
+I can add the nodes given, and move down the tree as needed for the lowest
 common ancestor based on the value of the nodes in relation to r,
 which will change if no common ancestor is available for that
 recursion.
@@ -365,11 +378,11 @@ I also want to check to make sure the given nodes are in the tree.
 
 
 Time and space efficiency:
-To build the tree, I must go through all the nodes, which is nm
-Worst Case Time: ~O(nm)
+I need to go through the nodes, potentially all the way down
+the tree, so the worst case efficiency is ~O(n)
 
-I'm not sure if I am adding to the call stack as I recursively
-call, I think space is ~O(1)
+We are not creating any structures so the space efficiency
+is ~O(1)
 
 
 Question 5
@@ -418,7 +431,7 @@ then move through the items in the list to get the value at the resulting
 position
 
 Time and Space Efficiency:
-Since we are iterating through the linked list with 1 action (moving to the next item),
-    worst case time of question5 is about O(n).
+Since we are iterating through the linked list twice (getting the ll length and then moving through the list),
+    worst case time of question5 is about O(n+n). ~O(n)
 
 We are not creating any structures so Worst Case space will be ~O(1)
